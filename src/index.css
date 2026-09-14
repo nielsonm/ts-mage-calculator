@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#0c0c0f] text-zinc-200 antialiased selection:bg-amber-600/30 selection:text-amber-200;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, .font-gothic {
+    font-family: 'Cinzel', Georgia, serif;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Custom Mage Character Sheet Styling */
+.sheet-parchment {
+  background: radial-gradient(circle at 50% 0%, #1c1c24 0%, #121217 70%, #0c0c0f 100%);
+  border: 1px solid rgba(200, 155, 60, 0.25);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px -10px rgba(147, 51, 234, 0.15);
+}
+
+.sheet-section-title {
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #e5b857;
+  padding: 0.25rem 1rem;
+}
+
+.sheet-section-title::before,
+.sheet-section-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 25%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(200, 155, 60, 0.5), transparent);
+}
+
+.sheet-section-title::before {
+  left: 0;
+}
+
+.sheet-section-title::after {
+  right: 0;
+}
+
+/* Dot Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 6px 1px rgba(168, 85, 247, 0.6), inset 0 0 4px rgba(236, 72, 153, 0.4);
+    transform: scale(1.05);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(168, 85, 247, 0.9), inset 0 0 6px rgba(236, 72, 153, 0.7);
+    transform: scale(1.12);
+  }
+}
+
+.dot-upgraded {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
