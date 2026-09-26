@@ -1,5 +1,8 @@
 # Mage: The Ascension (M20) Character Sheet & XP Calculator
 
+[![CI](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yml)
+[![CD - Deploy to GitHub Pages](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/cd.yml/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/cd.yml)
+
 An interactive, responsive character sheet and real-time experience point (XP) planning calculator for **Mage: The Ascension 20th Anniversary Edition (M20)**. Built with React 18, TypeScript, Vite, and Tailwind CSS.
 
 ---
@@ -146,7 +149,7 @@ ts-mage-calculator/
 - 📖 [User Guide](docs/USER_GUIDE.md) - How to use the character sheet and planner.
 - 📐 [Architecture Guide](docs/ARCHITECTURE.md) - Deep dive into state management, engine design, and component hierarchy.
 - 📜 [M20 XP Rules Reference](docs/XP_RULES.md) - Mathematical mechanics and book citations.
-- 🤝 [Contributing Guide](fCONTRIBUTING.md) - Setup instructions, coding conventions, and pull request guidelines.
+- 🤝 [Contributing Guide](CONTRIBUTING.md) - Setup instructions, coding conventions, and pull request guidelines.
 
 ---
 
