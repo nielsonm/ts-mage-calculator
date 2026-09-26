@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Sparkles, Edit2, Check, X, Crown, Trash2 } from 'lucide-react';
-import { getSpecialtiesForTrait, GENERAL_MECHANICAL_EFFECTS } from '../data/specialtySuggestions';
+import { Sparkles, Edit2, Check, X, Crown, Trash2, BookOpen } from 'lucide-react';
+import {
+  getSpecialtiesForTrait,
+  getTraitSpecialtyInfo,
+  GENERAL_MECHANICAL_EFFECTS,
+} from '../data/specialtySuggestions';
 
 export type ExtraEffectCategory = 'attribute' | 'ability';
 
@@ -37,8 +41,9 @@ export const ExtraEffectBadge: React.FC<ExtraEffectBadgeProps> = ({
     return null;
   }
 
-  // Trait-specific thematic suggestions
-  const thematicSuggestions = traitId ? getSpecialtiesForTrait(traitId, categoryType) : [];
+  // Trait-specific thematic suggestions & source reference
+  const traitInfo = traitId ? getTraitSpecialtyInfo(traitId, categoryType) : undefined;
+  const thematicSuggestions = traitInfo?.suggestions || (traitId ? getSpecialtiesForTrait(traitId, categoryType) : []);
 
   const handleOpenEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -153,11 +158,22 @@ export const ExtraEffectBadge: React.FC<ExtraEffectBadgeProps> = ({
           className="space-y-2 bg-zinc-950/90 p-2.5 rounded border border-amber-500/40 shadow-lg text-xs"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between text-zinc-300 border-b border-zinc-800 pb-1">
-            <span className="font-serif font-bold text-amber-300 flex items-center gap-1 text-[11px]">
-              <Sparkles size={12} className="text-amber-400" />
-              Custom Extra Effect for {traitName} ({isMastery ? '>4 Dots Mastery' : isSpecialty ? '4+ Dots Specialty' : 'Custom'})
-            </span>
+          <div className="flex items-center justify-between text-zinc-300 border-b border-zinc-800 pb-1 gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+              <span className="font-serif font-bold text-amber-300 flex items-center gap-1 text-[11px] truncate">
+                <Sparkles size={12} className="text-amber-400 shrink-0" />
+                <span>Custom Extra Effect for {traitName} ({isMastery ? '>4 Dots Mastery' : isSpecialty ? '4+ Dots Specialty' : 'Custom'})</span>
+              </span>
+              {traitInfo?.page && (
+                <span
+                  className="inline-flex items-center gap-1 text-[10px] bg-amber-950/70 text-amber-300 border border-amber-800/60 px-1.5 py-0.2 rounded font-serif shadow-sm shrink-0"
+                  title={`Reference: ${traitInfo.book || 'M20 Core'} Page ${traitInfo.page}`}
+                >
+                  <BookOpen size={10} className="text-amber-400" />
+                  <span>{traitInfo.book || 'M20'} p. {traitInfo.page}</span>
+                </span>
+              )}
+            </div>
             <button
               type="button"
               onClick={handleCancel}
@@ -185,7 +201,14 @@ export const ExtraEffectBadge: React.FC<ExtraEffectBadgeProps> = ({
           {/* Thematic Suggestions */}
           {thematicSuggestions.length > 0 && (
             <div>
-              <div className="text-[10px] text-zinc-400 mb-1 font-serif">Thematic Specialties for {traitName}:</div>
+              <div className="flex items-center justify-between text-[10px] text-zinc-400 mb-1 font-serif">
+                <span>Thematic Specialties for {traitName}:</span>
+                {traitInfo?.page && (
+                  <span className="text-zinc-500 italic">
+                    See {traitInfo.book || 'M20'} p. {traitInfo.page} for more
+                  </span>
+                )}
+              </div>
               <div className="flex flex-wrap gap-1">
                 {thematicSuggestions.map((suggestion) => (
                   <button
