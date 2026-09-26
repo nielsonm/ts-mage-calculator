@@ -11,6 +11,7 @@ import {
 } from '../src/engine/xpCalculator';
 import { INITIAL_CHARACTER_STATE } from '../src/engine/initialState';
 import { CharacterSheetState } from '../src/types/character';
+import { getTraitSpecialtyInfo, getSpecialtiesForTrait } from '../src/data/specialtySuggestions';
 
 describe('M20 XP Calculator Engine', () => {
   describe('Attributes (Current Rating x 4)', () => {
@@ -168,6 +169,46 @@ describe('M20 XP Calculator Engine', () => {
       const dexItem = plan.items.find((item) => item.traitId === 'dexterity');
       expect(dexItem).toBeDefined();
       expect(dexItem?.notes).toContain('Unlocks Custom Specialty (4+ Dots)');
+    });
+  });
+
+  describe('Specialty Suggestions & Page Number References', () => {
+    it('provides M20 Core page references for all 9 attributes', () => {
+      // Physical: p. 273
+      expect(getTraitSpecialtyInfo('strength', 'attribute')?.page).toBe(273);
+      expect(getTraitSpecialtyInfo('dexterity', 'attribute')?.page).toBe(273);
+      expect(getTraitSpecialtyInfo('stamina', 'attribute')?.page).toBe(273);
+
+      // Social: p. 274
+      expect(getTraitSpecialtyInfo('charisma', 'attribute')?.page).toBe(274);
+      expect(getTraitSpecialtyInfo('manipulation', 'attribute')?.page).toBe(274);
+      expect(getTraitSpecialtyInfo('appearance', 'attribute')?.page).toBe(274);
+
+      // Mental: p. 274-275
+      expect(getTraitSpecialtyInfo('perception', 'attribute')?.page).toBe(274);
+      expect(getTraitSpecialtyInfo('intelligence', 'attribute')?.page).toBe(275);
+      expect(getTraitSpecialtyInfo('wits', 'attribute')?.page).toBe(275);
+    });
+
+    it('provides verified M20 Core printed page references for abilities', () => {
+      // Talents
+      expect(getTraitSpecialtyInfo('empathy', 'ability')?.page).toBe(277);
+      expect(getTraitSpecialtyInfo('alertness', 'ability')?.page).toBe(275);
+      expect(getTraitSpecialtyInfo('brawl', 'ability')?.page).toBe(276);
+
+      // Skills
+      expect(getTraitSpecialtyInfo('crafts', 'ability')?.page).toBe(279);
+      expect(getTraitSpecialtyInfo('drive', 'ability')?.page).toBe(280);
+
+      // Knowledges
+      expect(getTraitSpecialtyInfo('investigation', 'ability')?.page).toBe(286);
+      expect(getTraitSpecialtyInfo('science', 'ability')?.page).toBe(288);
+    });
+
+    it('returns suggestions array with getSpecialtiesForTrait', () => {
+      const strSpecs = getSpecialtiesForTrait('strength', 'attribute');
+      expect(strSpecs.length).toBeGreaterThan(0);
+      expect(strSpecs).toContain('Feats of Might');
     });
   });
 });
