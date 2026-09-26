@@ -238,6 +238,15 @@ export function calculateCharacterPlan(
   Object.values(sheet.attributes).forEach((attr) => {
     if (attr.target > attr.base) {
       const { totalCost, steps } = calculateAttributeCost(attr.base, attr.target, config);
+      let notes: string | undefined;
+      if (attr.extraEffect) {
+        notes = `Mastery Extra Effect: ${attr.extraEffect}`;
+      } else if (attr.target > 4 && attr.base <= 4) {
+        notes = 'Unlocks Custom Extra Effect (>4 Dots Mastery)';
+      } else if (attr.target >= 4 && attr.base < 4) {
+        notes = 'Unlocks Custom Specialty (4+ Dots)';
+      }
+
       items.push({
         traitId: attr.id,
         traitName: attr.name,
@@ -246,6 +255,7 @@ export function calculateCharacterPlan(
         targetRating: attr.target,
         totalCost,
         steps,
+        notes,
       });
     }
   });
@@ -254,6 +264,15 @@ export function calculateCharacterPlan(
   Object.values(sheet.abilities).forEach((ability) => {
     if (ability.target > ability.base) {
       const { totalCost, steps } = calculateAbilityCost(ability.base, ability.target, config);
+      let notes: string | undefined;
+      if (ability.extraEffect) {
+        notes = `Mastery Extra Effect: ${ability.extraEffect}`;
+      } else if (ability.target > 4 && ability.base <= 4) {
+        notes = 'Unlocks Custom Extra Effect (>4 Dots Mastery)';
+      } else if (ability.target >= 4 && ability.base < 4) {
+        notes = 'Unlocks Custom Specialty (4+ Dots)';
+      }
+
       items.push({
         traitId: ability.id,
         traitName: ability.name,
@@ -262,6 +281,7 @@ export function calculateCharacterPlan(
         targetRating: ability.target,
         totalCost,
         steps,
+        notes,
       });
     }
   });

@@ -136,5 +136,38 @@ describe('M20 XP Calculator Engine', () => {
       expect(planWithWarning.warnings.length).toBeGreaterThan(0);
       expect(planWithWarning.warnings[0]).toContain('exceeds character Arete');
     });
+
+    it('notes custom extra effects when attributes or abilities exceed 4 dots', () => {
+      const sheet: CharacterSheetState = JSON.parse(JSON.stringify(INITIAL_CHARACTER_STATE));
+
+      // Upgrade Intelligence 3 -> 5 (>4 dots)
+      sheet.attributes.intelligence.target = 5;
+      sheet.attributes.intelligence.extraEffect = '10s Count as Two Successes';
+
+      // Upgrade Occult 3 -> 5 (>4 dots) without explicit effect yet
+      sheet.abilities.occult.target = 5;
+
+      const plan = calculateCharacterPlan(sheet, DEFAULT_M20_RULES);
+
+      const intelItem = plan.items.find((item) => item.traitId === 'intelligence');
+      expect(intelItem).toBeDefined();
+      expect(intelItem?.notes).toBe('Mastery Extra Effect: 10s Count as Two Successes');
+
+      const occultItem = plan.items.find((item) => item.traitId === 'occult');
+      expect(occultItem).toBeDefined();
+      expect(occultItem?.notes).toContain('Unlocks Custom Extra Effect (>4 Dots Mastery)');
+    });
+
+    it('notes custom specialty when traits reach 4 dots', () => {
+      const sheet: CharacterSheetState = JSON.parse(JSON.stringify(INITIAL_CHARACTER_STATE));
+
+      // Upgrade Dexterity 2 -> 4 (4 dots)
+      sheet.attributes.dexterity.target = 4;
+
+      const plan = calculateCharacterPlan(sheet, DEFAULT_M20_RULES);
+      const dexItem = plan.items.find((item) => item.traitId === 'dexterity');
+      expect(dexItem).toBeDefined();
+      expect(dexItem?.notes).toContain('Unlocks Custom Specialty (4+ Dots)');
+    });
   });
 });

@@ -7,6 +7,7 @@ export interface AttributeTrait {
   base: number;
   target: number;
   specialty?: string;
+  extraEffect?: string;
 }
 
 export type AbilityCategory = 'talents' | 'skills' | 'knowledges';
@@ -18,6 +19,7 @@ export interface AbilityTrait {
   base: number;
   target: number;
   specialty?: string;
+  extraEffect?: string;
   isCustom?: boolean;
 }
 

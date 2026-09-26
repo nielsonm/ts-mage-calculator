@@ -58,7 +58,7 @@ export const App: React.FC = () => {
   // Attribute change
   const handleAttributeChange = (
     id: string,
-    field: 'base' | 'target' | 'specialty',
+    field: 'base' | 'target' | 'specialty' | 'extraEffect',
     value: number | string
   ) => {
     setSheet((prev) => {
@@ -80,7 +80,7 @@ export const App: React.FC = () => {
   // Ability change
   const handleAbilityChange = (
     id: string,
-    field: 'base' | 'target' | 'specialty',
+    field: 'base' | 'target' | 'specialty' | 'extraEffect',
     value: number | string
   ) => {
     setSheet((prev) => {

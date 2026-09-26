@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { AbilityTrait, AbilityCategory, EditMode } from '../types/character';
 import { DotRating } from './DotRating';
-import { Plus, Trash2 } from 'lucide-react';
+import { ExtraEffectBadge } from './ExtraEffectBadge';
+import { Plus, Trash2, Crown, Sparkles } from 'lucide-react';
 
 interface AbilitiesSectionProps {
   abilities: Record<string, AbilityTrait>;
   mode: EditMode;
-  onAbilityChange: (id: string, field: 'base' | 'target' | 'specialty', value: number | string) => void;
+  onAbilityChange: (
+    id: string,
+    field: 'base' | 'target' | 'specialty' | 'extraEffect',
+    value: number | string
+  ) => void;
   onAddCustomAbility: (name: string, category: AbilityCategory) => void;
   onRemoveCustomAbility: (id: string) => void;
 }
@@ -42,42 +47,89 @@ export const AbilitiesSection: React.FC<AbilitiesSectionProps> = ({
         <div className="space-y-2">
           {items.map((trait) => {
             const isUpgraded = trait.target > trait.base;
+            const currentRating = Math.max(trait.base, trait.target);
+            const isMastery = currentRating > 4;
+            const isSpecialty = currentRating === 4;
+            const showExtraEffect = currentRating >= 4 || Boolean(trait.extraEffect);
+
             return (
-              <div key={trait.id} className="flex items-center justify-between text-xs md:text-sm group">
-                <div className="flex items-center gap-1.5 flex-1 pr-2 truncate">
-                  {trait.isCustom && (
-                    <button
-                      type="button"
-                      onClick={() => onRemoveCustomAbility(trait.id)}
-                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
-                      title="Remove custom ability"
+              <div
+                key={trait.id}
+                className={`p-1.5 rounded transition-all group ${
+                  isMastery
+                    ? isUpgraded
+                      ? 'trait-mastery-upgraded border border-purple-500/30'
+                      : 'trait-mastery-active border border-amber-500/30'
+                    : isSpecialty
+                    ? isUpgraded
+                      ? 'bg-purple-950/20 border border-purple-500/25'
+                      : 'bg-amber-950/15 border border-amber-600/25'
+                    : 'hover:bg-zinc-800/20'
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs md:text-sm">
+                  <div className="flex items-center gap-1.5 flex-1 pr-2 truncate">
+                    {isMastery ? (
+                      <span title="Mastery rank (>4 dots)" className="shrink-0 flex items-center">
+                        <Crown
+                          size={12}
+                          className={isUpgraded ? 'text-purple-400' : 'text-amber-400'}
+                        />
+                      </span>
+                    ) : isSpecialty ? (
+                      <span title="Specialty rank (4+ dots)" className="shrink-0 flex items-center">
+                        <Sparkles
+                          size={11}
+                          className={isUpgraded ? 'text-purple-400' : 'text-amber-400'}
+                        />
+                      </span>
+                    ) : null}
+                    {trait.isCustom && (
+                      <button
+                        type="button"
+                        onClick={() => onRemoveCustomAbility(trait.id)}
+                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
+                        title="Remove custom ability"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    )}
+                    <span
+                      className={`truncate font-medium ${
+                        isUpgraded ? 'text-purple-300 font-semibold' : 'text-zinc-300'
+                      }`}
                     >
-                      <Trash2 size={12} />
-                    </button>
-                  )}
-                  <span
-                    className={`truncate font-medium ${
-                      isUpgraded ? 'text-purple-300 font-semibold' : 'text-zinc-300'
-                    }`}
-                  >
-                    {trait.name}
-                  </span>
-                  {isUpgraded && (
-                    <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1 py-0.2 rounded border border-purple-500/40">
-                      +{trait.target - trait.base}
+                      {trait.name}
                     </span>
-                  )}
+                    {isUpgraded && (
+                      <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1 py-0.2 rounded border border-purple-500/40">
+                        +{trait.target - trait.base}
+                      </span>
+                    )}
+                  </div>
+                  <DotRating
+                    base={trait.base}
+                    target={trait.target}
+                    min={0}
+                    max={5}
+                    mode={mode}
+                    onBaseChange={(newBase) => onAbilityChange(trait.id, 'base', newBase)}
+                    onTargetChange={(newTarget) => onAbilityChange(trait.id, 'target', newTarget)}
+                    ariaLabel={trait.name}
+                  />
                 </div>
-                <DotRating
-                  base={trait.base}
-                  target={trait.target}
-                  min={0}
-                  max={5}
-                  mode={mode}
-                  onBaseChange={(newBase) => onAbilityChange(trait.id, 'base', newBase)}
-                  onTargetChange={(newTarget) => onAbilityChange(trait.id, 'target', newTarget)}
-                  ariaLabel={trait.name}
-                />
+
+                {showExtraEffect && (
+                  <ExtraEffectBadge
+                    traitId={trait.id}
+                    traitName={trait.name}
+                    rating={currentRating}
+                    isUpgraded={isUpgraded}
+                    extraEffect={trait.extraEffect}
+                    categoryType="ability"
+                    onSaveEffect={(effect) => onAbilityChange(trait.id, 'extraEffect', effect)}
+                  />
+                )}
               </div>
             );
           })}
