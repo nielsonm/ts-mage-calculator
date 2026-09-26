@@ -34,7 +34,7 @@ An interactive, responsive character sheet and real-time experience point (XP) p
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (version 18+ recommended)
+- [Node.js](https://nodejs.org/) (version 20+ or 22+ LTS recommended)
 - [Yarn](https://yarnpkg.com/) or `npm`
 
 ### Installation

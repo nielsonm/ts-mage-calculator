@@ -28,7 +28,7 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 
 ### Prerequisites
 
-- **Node.js**: `v18.0.0` or higher
+- **Node.js**: `v20.19.0` or higher (Node 20 or 22 LTS)
 - **Package Manager**: [Yarn](https://yarnpkg.com/) (v1.22+ or Berry) or `npm` (v9+)
 - **Git**
 
