@@ -28,7 +28,7 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 
 ### Prerequisites
 
-- **Node.js**: `v18.0.0` or higher
+- **Node.js**: `v20.19.0` or higher (Node 20 or 22 LTS)
 - **Package Manager**: [Yarn](https://yarnpkg.com/) (v1.22+ or Berry) or `npm` (v9+)
 - **Git**
 
@@ -168,6 +168,7 @@ Before opening a pull request, ensure you have completed the following checklist
 - [ ] Ran `yarn test` and all unit tests pass with zero failures.
 - [ ] Ran `yarn build` and the TypeScript compiler produces zero diagnostics or errors.
 - [ ] Code follows project formatting and styling standards.
+- [ ] All automated GitHub Actions CI checks (`.github/workflows/ci.yml`) pass.
 - [ ] If changing or introducing new game rules, cited the specific M20 Core rulebook page or supplement.
 - [ ] Updated corresponding documentation in [`docs/`](docs/) or [`README.md`](README.md) if user-facing behavior changed.
 
