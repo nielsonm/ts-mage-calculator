@@ -106,16 +106,16 @@ We adhere to [Conventional Commits](https://www.conventionalcommits.org/):
 ## 📐 Coding Standards
 
 ### TypeScript & Strict Typing
-- We use strict TypeScript (`strict: true` in [`tsconfig.json`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/tsconfig.json)).
+- We use strict TypeScript (`strict: true` in [`tsconfig.json`](tsconfig.json)).
 - Avoid using `any` or `unknown` without explicit type guards.
-- All domain structures must be typed in [`src/types/character.ts`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/types/character.ts).
+- All domain structures must be typed in [`src/types/character.ts`](src/types/character.ts).
 - Export types and interfaces cleanly and prefer descriptive property names.
 
 ### Architecture & Separation of Concerns
-- **Pure Calculation Engine**: Mathematical rules live in [`src/engine/xpCalculator.ts`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/engine/xpCalculator.ts). Do not embed XP calculation formulas inside React components.
-- **Rules Configuration**: All multiplier constants and flat costs are defined in [`XPRuleConfig`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/engine/xpCalculator.ts#L8) and default to [`DEFAULT_M20_RULES`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/engine/xpCalculator.ts#L20).
-- **UI Components**: Components in [`src/components/`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/components/) focus strictly on rendering, event handling, and accessible UI.
-- **State Management**: Top-level state lives in [`src/App.tsx`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/App.tsx) with immutable state updates. Avoid direct state mutations.
+- **Pure Calculation Engine**: Mathematical rules live in [`src/engine/xpCalculator.ts`](src/engine/xpCalculator.ts). Do not embed XP calculation formulas inside React components.
+- **Rules Configuration**: All multiplier constants and flat costs are defined in [`XPRuleConfig`](src/engine/xpCalculator.ts#L8) and default to [`DEFAULT_M20_RULES`](src/engine/xpCalculator.ts#L20).
+- **UI Components**: Components in [`src/components/`](src/components/) focus strictly on rendering, event handling, and accessible UI.
+- **State Management**: Top-level state lives in [`src/App.tsx`](src/App.tsx) with immutable state updates. Avoid direct state mutations.
 
 ### Styling & Design System
 - Use [Tailwind CSS](https://tailwindcss.com/) classes for styling.
@@ -145,7 +145,7 @@ npx vitest --ui
 ### Adding New Tests
 
 When adding or modifying rules or traits:
-1. Locate [`tests/xpCalculator.test.ts`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/tests/xpCalculator.test.ts).
+1. Locate [`tests/xpCalculator.test.ts`](tests/xpCalculator.test.ts).
 2. Write unit tests testing:
    - Single step increases (e.g. 1 -> 2, 2 -> 3).
    - Multi-dot leaps (e.g. 0 -> 4, 1 -> 5).
@@ -169,7 +169,7 @@ Before opening a pull request, ensure you have completed the following checklist
 - [ ] Ran `yarn build` and the TypeScript compiler produces zero diagnostics or errors.
 - [ ] Code follows project formatting and styling standards.
 - [ ] If changing or introducing new game rules, cited the specific M20 Core rulebook page or supplement.
-- [ ] Updated corresponding documentation in [`docs/`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/docs/) or [`README.md`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/README.md) if user-facing behavior changed.
+- [ ] Updated corresponding documentation in [`docs/`](docs/) or [`README.md`](README.md) if user-facing behavior changed.
 
 ### Pull Request Description Template
 
@@ -201,4 +201,4 @@ Mage 20th Anniversary Edition has precise character advancement rules:
 - **Backgrounds**: Storyteller option: New = 3 XP; Existing = Current Rating × 2 XP (p. 336)
 - **Spheres Capped by Arete**: A mage cannot possess a Sphere rating exceeding their Arete rating (p. 66, 331).
 
-Any contributions adjusting these formulas must be justified against printed source material or implemented as optional Storyteller rule toggles in [`XPRuleConfig`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/engine/xpCalculator.ts#L8).
+Any contributions adjusting these formulas must be justified against printed source material or implemented as optional Storyteller rule toggles in [`XPRuleConfig`](src/engine/xpCalculator.ts#L8).

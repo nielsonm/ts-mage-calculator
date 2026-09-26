@@ -14,7 +14,7 @@ An interactive, responsive character sheet and real-time experience point (XP) p
   - Handles differential costs for Affinity vs. Non-Affinity Spheres.
   - Accounts for flat costs on new traits (Abilities: 3 XP, Spheres: 10 XP).
 - **Rule Validations & Alerts**:
-  - Warns in real-time when any Sphere target rating exceeds the character's [`Arete`](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/src/types/character.ts#L62) rating.
+  - Warns in real-time when any Sphere target rating exceeds the character's [`Arete`](src/types/character.ts#L62) rating.
   - Seeking reminders for Arete advancement.
 - **Specialties & Mastery Effects**:
   - Interactive specialty picker drawer with verified M20 Core rulebook page citations (pp. 273–288) for all 9 Attributes and 30+ Abilities.
@@ -137,16 +137,16 @@ ts-mage-calculator/
 | **Willpower** | `Current Rating × 1 XP` | Base dot progression |
 | **Backgrounds** | `3 XP` (new) / `Current × 2 XP` | Storyteller permission required |
 
-*For complete details, see [docs/XP_RULES.md](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/docs/XP_RULES.md).*
+*For complete details, see [docs/XP_RULES.md](docs/XP_RULES.md).*
 
 ---
 
 ## 📚 Documentation Suite
 
-- 📖 [User Guide](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/docs/USER_GUIDE.md) - How to use the character sheet and planner.
-- 📐 [Architecture Guide](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/docs/ARCHITECTURE.md) - Deep dive into state management, engine design, and component hierarchy.
-- 📜 [M20 XP Rules Reference](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/docs/XP_RULES.md) - Mathematical mechanics and book citations.
-- 🤝 [Contributing Guide](file:///home/mike/Documents/TTRPG/Mage/ts-mage-calculator/CONTRIBUTING.md) - Setup instructions, coding conventions, and pull request guidelines.
+- 📖 [User Guide](docs/USER_GUIDE.md) - How to use the character sheet and planner.
+- 📐 [Architecture Guide](docs/ARCHITECTURE.md) - Deep dive into state management, engine design, and component hierarchy.
+- 📜 [M20 XP Rules Reference](docs/XP_RULES.md) - Mathematical mechanics and book citations.
+- 🤝 [Contributing Guide](fCONTRIBUTING.md) - Setup instructions, coding conventions, and pull request guidelines.
 
 ---
 
