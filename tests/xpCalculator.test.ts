@@ -26,8 +26,8 @@ describe('M20 XP Calculator Engine', () => {
       const result = calculateAttributeCost(1, 3);
       expect(result.totalCost).toBe(12);
       expect(result.steps).toEqual([
-        { from: 1, to: 2, cost: 4, formula: '1 x 4 XP' },
-        { from: 2, to: 3, cost: 8, formula: '2 x 4 XP' },
+        { from: 1, to: 2, cost: 4, formula: '1 × 4 XP' },
+        { from: 2, to: 3, cost: 8, formula: '2 × 4 XP' },
       ]);
     });
 
