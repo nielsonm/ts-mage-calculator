@@ -26,8 +26,8 @@ describe('M20 XP Calculator Engine', () => {
       const result = calculateAttributeCost(1, 3);
       expect(result.totalCost).toBe(12);
       expect(result.steps).toEqual([
-        { from: 1, to: 2, cost: 4, formula: '1 × 4 XP' },
-        { from: 2, to: 3, cost: 8, formula: '2 × 4 XP' },
+        { from: 1, to: 2, cost: 4, formula: '1 x 4 XP' },
+        { from: 2, to: 3, cost: 8, formula: '2 x 4 XP' },
       ]);
     });
 
@@ -43,12 +43,14 @@ describe('M20 XP Calculator Engine', () => {
   });
 
   describe('Abilities (New = 3 XP, Current Rating x 2)', () => {
+    // New Ability: 3 XP
     it('calculates 0 -> 1 as 3 XP (New Ability)', () => {
       const result = calculateAbilityCost(0, 1);
       expect(result.totalCost).toBe(3);
       expect(result.steps[0].formula).toContain('New Ability');
     });
-
+    // New Ability, plus a second dot: 3+2n XP for n dots.
+    // e.g. 0 -> 2 = 3 + 2 = 5 XP
     it('calculates 0 -> 2 as 5 XP (3 + 2)', () => {
       const result = calculateAbilityCost(0, 2);
       expect(result.totalCost).toBe(5);
@@ -59,6 +61,7 @@ describe('M20 XP Calculator Engine', () => {
       expect(result.totalCost).toBe(12);
     });
 
+    // New Ability, plus 4 dots: 3 + 2 + 4 + 6 + 8 = 23 XP
     it('calculates 0 -> 5 as 23 XP (3 + 2 + 4 + 6 + 8)', () => {
       const result = calculateAbilityCost(0, 5);
       expect(result.totalCost).toBe(23);
@@ -117,9 +120,11 @@ describe('M20 XP Calculator Engine', () => {
   });
 
   describe('Full Character Plan & Warnings', () => {
+    // This test checks that the XP calculator correctly aggregates costs for multiple
+    // traits and generates warnings when a sphere exceeds the character's Arete.
     it('computes aggregated multi-trait upgrades and generates arete warning if sphere > arete', () => {
       const sheet: CharacterSheetState = JSON.parse(JSON.stringify(INITIAL_CHARACTER_STATE));
-      
+
       // Upgrade Intelligence 3 -> 4 (12 XP)
       sheet.attributes.intelligence.target = 4;
       // Upgrade Forces (Affinity) 2 -> 3 (14 XP)
@@ -154,6 +159,8 @@ describe('M20 XP Calculator Engine', () => {
       expect(intelItem).toBeDefined();
       expect(intelItem?.notes).toBe('Mastery Extra Effect: 10s Count as Two Successes');
 
+      // Any attribute or ability that exceeds 4 dots should have a note about unlocking 
+      // a custom extra effect, even if the user hasn't specified one yet.
       const occultItem = plan.items.find((item) => item.traitId === 'occult');
       expect(occultItem).toBeDefined();
       expect(occultItem?.notes).toContain('Unlocks Custom Extra Effect (>4 Dots Mastery)');
