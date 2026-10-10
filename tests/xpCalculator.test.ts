@@ -9,7 +9,7 @@ import {
   calculateCharacterPlan,
   DEFAULT_M20_RULES,
 } from '../src/engine/xpCalculator';
-import { INITIAL_CHARACTER_STATE } from '../src/engine/initialState';
+import { INITIAL_CHARACTER_STATE, SANTIAGO_CHARACTER_STATE } from '../src/engine/initialState';
 import { CharacterSheetState } from '../src/types/character';
 import { getTraitSpecialtyInfo, getSpecialtiesForTrait } from '../src/data/specialtySuggestions';
 
@@ -216,6 +216,19 @@ describe('M20 XP Calculator Engine', () => {
       const strSpecs = getSpecialtiesForTrait('strength', 'attribute');
       expect(strSpecs.length).toBeGreaterThan(0);
       expect(strSpecs).toContain('Feats of Might');
+    });
+  });
+
+  describe('Santiago Gutierrez Preset', () => {
+    it('loads and validates correctly in the calculation engine', () => {
+      expect(SANTIAGO_CHARACTER_STATE.header.name).toBe('Santiago Gutierrez');
+      expect(SANTIAGO_CHARACTER_STATE.header.tradition).toBe('Cult of Ecstasy');
+      expect(SANTIAGO_CHARACTER_STATE.spheres.time.isAffinity).toBe(true);
+
+      const plan = calculateCharacterPlan(SANTIAGO_CHARACTER_STATE);
+      // Since base == target for all stats in initial preset, total planned XP should be 0
+      expect(plan.totalXp).toBe(0);
+      expect(plan.warnings).toEqual([]);
     });
   });
 });

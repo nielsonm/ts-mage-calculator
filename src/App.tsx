@@ -5,7 +5,7 @@ import {
   AbilityCategory,
   CharacterHeader,
 } from './types/character';
-import { INITIAL_CHARACTER_STATE } from './engine/initialState';
+import { INITIAL_CHARACTER_STATE, SANTIAGO_CHARACTER_STATE } from './engine/initialState';
 import { calculateCharacterPlan } from './engine/xpCalculator';
 import { SheetHeader } from './components/SheetHeader';
 import { AttributesSection } from './components/AttributesSection';
@@ -243,6 +243,13 @@ export const App: React.FC = () => {
     }
   };
 
+  // Load Santiago Gutierrez preset
+  const handleLoadSantiago = () => {
+    if (window.confirm('Load Santiago Gutierrez (Cult of Ecstasy) preset?')) {
+      setSheet(SANTIAGO_CHARACTER_STATE);
+    }
+  };
+
   // Export JSON
   const handleExportJson = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(sheet, null, 2));
@@ -295,10 +302,19 @@ export const App: React.FC = () => {
             type="button"
             onClick={handleResetToDefault}
             className="hover:text-amber-300 text-zinc-400 px-2 py-1 rounded bg-zinc-900 border border-zinc-800 transition-colors flex items-center gap-1"
-            title="Reset to default template"
+            title="Reset to default Hermetic template"
           >
             <RefreshCw size={11} />
             <span>Hermetic Scholar</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleLoadSantiago}
+            className="hover:text-purple-300 text-zinc-400 px-2 py-1 rounded bg-zinc-900 border border-zinc-800 transition-colors flex items-center gap-1"
+            title="Load Santiago Gutierrez (Cult of Ecstasy) preset"
+          >
+            <Sparkles size={11} className="text-purple-400" />
+            <span>Ecstatic Cultist</span>
           </button>
         </div>
       </div>
