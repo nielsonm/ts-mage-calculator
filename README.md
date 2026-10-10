@@ -149,6 +149,7 @@ ts-mage-calculator/
 - 📖 [User Guide](docs/USER_GUIDE.md) - How to use the character sheet and planner.
 - 📐 [Architecture Guide](docs/ARCHITECTURE.md) - Deep dive into state management, engine design, and component hierarchy.
 - 📜 [M20 XP Rules Reference](docs/XP_RULES.md) - Mathematical mechanics and book citations.
+- 🗺️ [Future Features Roadmap](docs/ROADMAP.md) - Strategic development plan and upcoming feature milestones.
 - 🤝 [Contributing Guide](CONTRIBUTING.md) - Setup instructions, coding conventions, and pull request guidelines.
 
 ---
