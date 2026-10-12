@@ -11,7 +11,11 @@ import {
 } from '../src/engine/xpCalculator';
 import { INITIAL_CHARACTER_STATE, SANTIAGO_CHARACTER_STATE } from '../src/engine/initialState';
 import { CharacterSheetState } from '../src/types/character';
-import { getTraitSpecialtyInfo, getSpecialtiesForTrait } from '../src/data/specialtySuggestions';
+import {
+  getTraitSpecialtyInfo,
+  getSpecialtiesForTrait,
+  GENERAL_MECHANICAL_EFFECTS,
+} from '../src/data/specialtySuggestions';
 
 describe('M20 XP Calculator Engine', () => {
   describe('Attributes (Current Rating x 4)', () => {
@@ -176,6 +180,69 @@ describe('M20 XP Calculator Engine', () => {
       const dexItem = plan.items.find((item) => item.traitId === 'dexterity');
       expect(dexItem).toBeDefined();
       expect(dexItem?.notes).toContain('Unlocks Custom Specialty (4+ Dots)');
+
+      // Upgrade Strength 3 -> 5 without extraEffect specified
+      sheet.attributes.strength.target = 5;
+      const planStr = calculateCharacterPlan(sheet, DEFAULT_M20_RULES);
+      const strItem = planStr.items.find((item) => item.traitId === 'strength');
+      expect(strItem?.notes).toContain('Unlocks Custom Extra Effect (>4 Dots Mastery)');
+
+      // Upgrade Athletics 2 -> 4 (Ability reaches 4 dots)
+      sheet.abilities.athletics.target = 4;
+      const planAth = calculateCharacterPlan(sheet, DEFAULT_M20_RULES);
+      const athItem = planAth.items.find((item) => item.traitId === 'athletics');
+      expect(athItem?.notes).toContain('Unlocks Custom Specialty (4+ Dots)');
+    });
+
+    it('aggregates willpower, backgrounds, and non-affinity spheres in plan', () => {
+      const sheet: CharacterSheetState = JSON.parse(JSON.stringify(INITIAL_CHARACTER_STATE));
+      // Willpower 5 -> 7 (5 + 6 = 11 XP)
+      sheet.willpower.base = 5;
+      sheet.willpower.target = 7;
+
+      // Background Avatar 1 -> 3 (2 + 4 = 6 XP)
+      sheet.backgrounds.avatar = {
+        id: 'avatar',
+        name: 'Avatar',
+        base: 1,
+        target: 3,
+        min: 0,
+        max: 5,
+      };
+
+      // Non-affinity Sphere (Prime) 1 -> 2 (1 * 8 = 8 XP)
+      sheet.spheres.prime.base = 1;
+      sheet.spheres.prime.target = 2;
+      sheet.spheres.prime.isAffinity = false;
+
+      const plan = calculateCharacterPlan(sheet, DEFAULT_M20_RULES);
+
+      const wpItem = plan.items.find((i) => i.traitId === 'willpower');
+      expect(wpItem).toBeDefined();
+      expect(wpItem?.totalCost).toBe(11);
+      expect(wpItem?.section).toBe('advantages');
+
+      const bgItem = plan.items.find((i) => i.traitId === 'avatar');
+      expect(bgItem).toBeDefined();
+      expect(bgItem?.totalCost).toBe(6);
+      expect(bgItem?.notes).toContain('Storyteller approval required');
+
+      const sphereItem = plan.items.find((i) => i.traitId === 'prime');
+      expect(sphereItem).toBeDefined();
+      expect(sphereItem?.totalCost).toBe(8);
+      expect(sphereItem?.notes).toBeUndefined();
+
+      expect(plan.totalXp).toBe(11 + 6 + 8);
+    });
+
+    it('supports custom rule configurations', () => {
+      const sheet: CharacterSheetState = JSON.parse(JSON.stringify(INITIAL_CHARACTER_STATE));
+      sheet.attributes.strength.base = 1;
+      sheet.attributes.strength.target = 2;
+
+      const customConfig = { ...DEFAULT_M20_RULES, attributeMultiplier: 5 };
+      const plan = calculateCharacterPlan(sheet, customConfig);
+      expect(plan.totalXp).toBe(5);
     });
   });
 
@@ -216,6 +283,19 @@ describe('M20 XP Calculator Engine', () => {
       const strSpecs = getSpecialtiesForTrait('strength', 'attribute');
       expect(strSpecs.length).toBeGreaterThan(0);
       expect(strSpecs).toContain('Feats of Might');
+    });
+
+    it('handles fallback queries, normalization, and unknown traits', () => {
+      expect(getTraitSpecialtyInfo('nonexistent', 'attribute')).toBeUndefined();
+      expect(getTraitSpecialtyInfo('nonexistent', 'ability')).toBeUndefined();
+      expect(getSpecialtiesForTrait('nonexistent', 'ability')).toEqual([]);
+
+      // Test fallback traitId query (e.g. camelCase key in ABILITY_SPECIALTIES)
+      const martialInfo = getTraitSpecialtyInfo('martialArts', 'ability');
+      expect(martialInfo?.page).toBe(280);
+
+      // Verify general mechanical effects list
+      expect(GENERAL_MECHANICAL_EFFECTS).toContain('10s Count as Two Successes');
     });
   });
 
