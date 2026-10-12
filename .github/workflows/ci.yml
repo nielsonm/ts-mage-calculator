@@ -37,7 +37,7 @@ jobs:
         run: yarn test
 
       - name: Run Unit Tests
-        run: npx vitest --coverage # or run npm script
+        run: npx vitest run --coverage
 
       - name: Publish Results Badge
         uses: wjervis7/vitest-badge-action@v1.0.0
