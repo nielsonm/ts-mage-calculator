@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yml)
 [![CD - Deploy to GitHub Pages](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/cd.yml/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/cd.yml)
-[![Test coverage](https://raw.githubusercontent.com/nielsonm/ts-mage-calculator/b00f6507d8433d276ef944f6d94782998f4f8f2e/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yaml)
+[![Test coverage](https://raw.githubusercontent.com/nielsonm/ts-mage-calculator/b00f6507d8433d276ef944f6d94782998f4f8f2e/badge.svg)](https://github.com/nielsonm/ts-mage-calculator/actions/workflows/ci.yml)
 
 An interactive, responsive character sheet and real-time experience point (XP) planning calculator for **Mage: The Ascension 20th Anniversary Edition (M20)**. Built with React 18, TypeScript, Vite, and Tailwind CSS.
 
